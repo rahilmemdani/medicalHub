@@ -1,5 +1,20 @@
 import React, { useState, useEffect } from 'react';
-import { Box, TextField, Button, MenuItem, Typography, Paper, Card, CardContent, CardActions, Dialog, DialogTitle, DialogContent, DialogActions, Divider } from '@mui/material';
+import {
+  Box,
+  TextField,
+  Button,
+  MenuItem,
+  Typography,
+  Paper,
+  Card,
+  CardContent,
+  CardActions,
+  Dialog,
+  DialogTitle,
+  DialogContent,
+  DialogActions,
+  Divider,
+} from '@mui/material';
 import PhoneIcon from '@mui/icons-material/Phone';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
@@ -10,7 +25,7 @@ interface Hospital {
   contact: string;
   email: string;
   services: string[];
-  mapLink: string; // Added Google Maps link
+  mapLink: string;
 }
 
 const SearchFilters: React.FC = () => {
@@ -151,10 +166,10 @@ const SearchFilters: React.FC = () => {
         <Typography variant="h6" gutterBottom>
           Search Results:
         </Typography>
-        <Box display="flex" flexDirection="column" gap={2}>
+        <Box display="grid" gridTemplateColumns="repeat(auto-fill, minmax(300px, 1fr))" gap={2}>
           {searchResults.length > 0 ? (
             searchResults.map((result, index) => (
-              <Card key={index} sx={{ backgroundColor: '#f5f5f5', borderRadius: 1 }}>
+              <Card key={index} sx={{ backgroundColor: '#f5f5f5', borderRadius: 1, boxShadow: 2 }}>
                 <CardContent>
                   <Typography variant="h6">{result.name}</Typography>
                   <Typography color="textSecondary">{result.location}</Typography>
