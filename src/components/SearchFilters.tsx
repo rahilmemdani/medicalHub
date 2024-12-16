@@ -10,6 +10,7 @@ interface Hospital {
   contact: string;
   email: string;
   services: string[];
+  mapLink: string; // Added Google Maps link
 }
 
 const SearchFilters: React.FC = () => {
@@ -68,8 +69,22 @@ const SearchFilters: React.FC = () => {
     }
 
     const results: Hospital[] = [
-      { name: 'Hospital A', location: `${area}, ${city}`, contact: '123-456-7890', email: 'contact@hospitalA.com', services: ['Emergency', 'Surgery', 'Cardiology'] },
-      { name: 'Hospital B', location: `${area}, ${city}`, contact: '987-654-3210', email: 'contact@hospitalB.com', services: ['Pediatrics', 'Neurology', 'Orthopedics'] },
+      {
+        name: 'Hospital A',
+        location: `${area}, ${city}`,
+        contact: '123-456-7890',
+        email: 'contact@hospitalA.com',
+        services: ['Emergency', 'Surgery', 'Cardiology'],
+        mapLink: 'https://www.google.com/maps?q=Hospital+A',
+      },
+      {
+        name: 'Hospital B',
+        location: `${area}, ${city}`,
+        contact: '987-654-3210',
+        email: 'contact@hospitalB.com',
+        services: ['Pediatrics', 'Neurology', 'Orthopedics'],
+        mapLink: 'https://www.google.com/maps?q=Hospital+B',
+      },
     ];
     setSearchResults(results);
   };
@@ -161,7 +176,9 @@ const SearchFilters: React.FC = () => {
                   <Typography variant="h6">{result.name}</Typography>
                   <Typography color="textSecondary">{result.location}</Typography>
                   <Typography color="textSecondary">Contact: {result.contact}</Typography>
-                  <Typography color="textSecondary">Email: <a href={`mailto:${result.email}`} style={{ color: 'blue', textDecoration: 'none' }}>{result.email}</a></Typography>
+                  <Typography color="textSecondary">
+                    Email: <a href={`mailto:${result.email}`} style={{ color: 'blue', textDecoration: 'none' }}>{result.email}</a>
+                  </Typography>
                 </CardContent>
                 <CardActions>
                   <Button size="small" color="primary" onClick={() => handleOpenDialog(result)}>View Details</Button>
@@ -184,7 +201,10 @@ const SearchFilters: React.FC = () => {
             <Box>
               <Typography variant="body1" sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                 <LocationOnIcon sx={{ mr: 1 }} />
-                {selectedHospital.location}
+                {selectedHospital.location} - 
+                <a href={selectedHospital.mapLink} target="_blank" rel="noopener noreferrer" style={{ color: 'blue', textDecoration: 'underline', marginLeft: '4px' }}>
+                  View on Google Maps
+                </a>
               </Typography>
               <Typography variant="body1" sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
                 <PhoneIcon sx={{ mr: 1 }} />
