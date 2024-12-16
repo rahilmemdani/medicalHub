@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
-import { Box, TextField, Button, MenuItem, Typography, Paper, Card, CardContent, CardActions, Dialog, DialogTitle, DialogContent, DialogActions } from '@mui/material';
+import { Box, TextField, Button, MenuItem, Typography, Paper, Card, CardContent, CardActions, Dialog, DialogTitle, DialogContent, DialogActions, Divider } from '@mui/material';
+import PhoneIcon from '@mui/icons-material/Phone';
+import LocationOnIcon from '@mui/icons-material/LocationOn';
+import MedicalServicesIcon from '@mui/icons-material/MedicalServices';
 
 interface Hospital {
   name: string;
   location: string;
   contact: string;
-  services: string[]; // Add services array
+  email: string;
+  services: string[];
 }
 
 const SearchFilters: React.FC = () => {
@@ -63,10 +67,9 @@ const SearchFilters: React.FC = () => {
       return;
     }
 
-    // Simulated search data options based on the selected filters
     const results: Hospital[] = [
-      { name: 'Hospital A', location: `${area}, ${city}`, contact: '123-456-7890', services: ['Emergency', 'Surgery', 'Cardiology'] },
-      { name: 'Hospital B', location: `${area}, ${city}`, contact: '987-654-3210', services: ['Pediatrics', 'Neurology', 'Orthopedics'] },
+      { name: 'Hospital A', location: `${area}, ${city}`, contact: '123-456-7890', email: 'contact@hospitalA.com', services: ['Emergency', 'Surgery', 'Cardiology'] },
+      { name: 'Hospital B', location: `${area}, ${city}`, contact: '987-654-3210', email: 'contact@hospitalB.com', services: ['Pediatrics', 'Neurology', 'Orthopedics'] },
     ];
     setSearchResults(results);
   };
@@ -158,6 +161,7 @@ const SearchFilters: React.FC = () => {
                   <Typography variant="h6">{result.name}</Typography>
                   <Typography color="textSecondary">{result.location}</Typography>
                   <Typography color="textSecondary">Contact: {result.contact}</Typography>
+                  <Typography color="textSecondary">Email: <a href={`mailto:${result.email}`} style={{ color: 'blue', textDecoration: 'none' }}>{result.email}</a></Typography>
                 </CardContent>
                 <CardActions>
                   <Button size="small" color="primary" onClick={() => handleOpenDialog(result)}>View Details</Button>
@@ -171,24 +175,35 @@ const SearchFilters: React.FC = () => {
       </Box>
 
       {/* Dialog for hospital details */}
-      <Dialog open={openDialog} onClose={handleCloseDialog}>
-        <DialogTitle>{selectedHospital?.name}</DialogTitle>
+      <Dialog open={openDialog} onClose={handleCloseDialog} maxWidth="sm" fullWidth>
+        <DialogTitle>
+          <Typography variant="h5">{selectedHospital?.name}</Typography>
+        </DialogTitle>
         <DialogContent>
           {selectedHospital && (
-            <>
-              <Typography variant="body1">
-                Location: {selectedHospital.location}
+            <Box>
+              <Typography variant="body1" sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                <LocationOnIcon sx={{ mr: 1 }} />
+                {selectedHospital.location}
               </Typography>
-              <Typography variant="body1">
-                Contact: {selectedHospital.contact}
+              <Typography variant="body1" sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                <PhoneIcon sx={{ mr: 1 }} />
+                <a href={`tel:${selectedHospital.contact}`} style={{ color: 'blue', textDecoration: 'none' }}>
+                  {selectedHospital.contact}
+                </a>
               </Typography>
-              <Typography variant="h6" mt={2}>Services Offered:</Typography>
-              <ul>
+              <Typography variant="body1" sx={{ display: 'flex', alignItems: 'center', mb: 1 }}>
+                <MedicalServicesIcon sx={{ mr: 1 }} />
+                Email: <a href={`mailto:${selectedHospital.email}`} style={{ color: 'blue', textDecoration: 'none' }}>{selectedHospital.email}</a>
+              </Typography>
+              <Divider sx={{ my: 2 }} />
+              <Typography variant="h6">Services Offered:</Typography>
+              <Box sx={{ ml: 2 }}>
                 {selectedHospital.services.map((service, index) => (
-                  <li key={index}>{service}</li>
+                  <Typography key={index} variant="body2">• {service}</Typography>
                 ))}
-              </ul>
-            </>
+              </Box>
+            </Box>
           )}
         </DialogContent>
         <DialogActions>
