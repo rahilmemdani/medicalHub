@@ -17,7 +17,6 @@ const SearchFilters: React.FC = () => {
   const [state, setState] = useState('');
   const [city, setCity] = useState('');
   const [area, setArea] = useState('');
-  const [pincode, setPincode] = useState('');
   const [searchResults, setSearchResults] = useState<Hospital[]>([]);
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedHospital, setSelectedHospital] = useState<Hospital | null>(null);
@@ -49,25 +48,19 @@ const SearchFilters: React.FC = () => {
   useEffect(() => {
     if (city && state) {
       setAreas(stateData[state][city] || []);
-      resetFields('area', 'pincode');
+      resetFields('area');
     } else {
       setAreas([]);
-      resetFields('area', 'pincode');
+      resetFields('area');
     }
   }, [city, state]);
 
   const resetFields = (...fields: string[]) => {
     if (fields.includes('city')) setCity('');
     if (fields.includes('area')) setArea('');
-    if (fields.includes('pincode')) setPincode('');
   };
 
   const handleSearch = () => {
-    if (!/^\d{6}$/.test(pincode)) {
-      alert('Pincode must be 6 digits.');
-      return;
-    }
-
     const results: Hospital[] = [
       {
         name: 'Hospital A',
@@ -149,16 +142,6 @@ const SearchFilters: React.FC = () => {
             </MenuItem>
           ))}
         </TextField>
-        <TextField
-          label="Pincode"
-          value={pincode}
-          onChange={(e) => setPincode(e.target.value.replace(/[^0-9]/g, '').slice(0, 6))}
-          inputProps={{ maxLength: 6, autoComplete: 'off' }}
-          variant="outlined"
-          error={!/^\d{6}$/.test(pincode) && pincode.length > 0}
-          helperText={!/^\d{6}$/.test(pincode) && pincode.length > 0 ? 'Pincode must be 6 digits.' : ''}
-          fullWidth
-        />
         <Button variant="contained" color="primary" onClick={handleSearch} fullWidth>
           Search
         </Button>
